@@ -1,0 +1,8 @@
+pygame>=2.5.0
+Flask>=3.0.0
+requests>=2.31.0
+numpy>=1.24.0
+tensorflow>=2.15.0  # For RL component
+torch>=2.1.0       # Alternative to TensorFlow
+pandas>=2.0.0      # For data handling
+matplotlib>=3.7.0  # For visualizations 
