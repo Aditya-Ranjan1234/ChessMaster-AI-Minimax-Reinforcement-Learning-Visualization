@@ -12,7 +12,7 @@ class ResultsAnalyzer:
     def __init__(self):
         self.results_dir = "results"
         os.makedirs(self.results_dir, exist_ok=True)
-        self.games_data = []
+        self.games_data = {}
         self.current_game = {
             'moves': [],
             'evaluations': {'local': [], 'groq': []},
@@ -46,10 +46,17 @@ class ResultsAnalyzer:
             'evaluations': self.current_game['evaluations'],
             'hallucinations': self.current_game['hallucinations'],
             'game_length': len(self.current_game['moves']),
-            'hallucination_detected': bool(self.current_game['hallucinations'])
+            'hallucination_detected': bool(self.current_game['hallucinations']),
+            'white_player': game_result['white_player'],
+            'black_player': game_result['black_player']
         }
         
-        self.games_data.append(game_data)
+        matchup_key = f"{game_data['white_player']}_vs_{game_data['black_player']}"
+        if matchup_key not in self.games_data:
+            self.games_data[matchup_key] = {'games_played': 0, 'games': []}
+            
+        self.games_data[matchup_key]['games_played'] += 1
+        self.games_data[matchup_key]['games'].append(game_data)
         self._save_game_data(game_data)
         self._reset_current_game()
         
@@ -75,7 +82,7 @@ class ResultsAnalyzer:
             
         # 1. Game Length Distribution
         plt.figure(figsize=(10, 6))
-        game_lengths = [game['game_length'] for game in self.games_data]
+        game_lengths = [game['game_length'] for game in self.games_data.values()]
         sns.histplot(game_lengths, bins=20)
         plt.title('Distribution of Game Lengths')
         plt.xlabel('Number of Moves')
@@ -84,27 +91,25 @@ class ResultsAnalyzer:
         plt.close()
         
         # 2. Evaluation Comparison
-        for game in self.games_data:
+        for game in self.games_data.values():
             plt.figure(figsize=(12, 6))
-            moves = range(len(game['evaluations']['local']))
-            plt.plot(moves, game['evaluations']['local'], label='Local LLM', alpha=0.7)
-            plt.plot(moves, game['evaluations']['groq'], label='Groq LLM', alpha=0.7)
-            plt.title(f'Model Evaluations - Game {game["game_id"]}')
+            moves = range(len(game['games']))
+            plt.plot(moves, [game['games'][i]['evaluations']['local'] for i in range(len(game['games']))], label='Local LLM', alpha=0.7)
+            plt.plot(moves, [game['games'][i]['evaluations']['groq'] for i in range(len(game['games']))], label='Groq LLM', alpha=0.7)
+            plt.title(f'Model Evaluations - Game {game["games"][0]["game_id"]}')
             plt.xlabel('Move Number')
             plt.ylabel('Evaluation')
             plt.legend()
             plt.grid(True, alpha=0.3)
-            plt.savefig(f"{self.results_dir}/evaluations_{game['game_id']}.png")
+            plt.savefig(f"{self.results_dir}/evaluations_{game['games'][0]['game_id']}.png")
             plt.close()
             
         # 3. Hallucination Analysis
-        hallucination_games = [game for game in self.games_data if game['hallucination_detected']]
+        hallucination_games = [game for game in self.games_data.values() for g in game['games'] if g['hallucination_detected']]
         if hallucination_games:
             plt.figure(figsize=(10, 6))
-            move_numbers = [hall['move_number'] for game in hallucination_games 
-                          for hall in game['hallucinations']]
-            models = [hall['model'] for game in hallucination_games 
-                     for hall in game['hallucinations']]
+            move_numbers = [g['hallucinations'][i]['move_number'] for game in hallucination_games for i in range(len(g['games']))]
+            models = [g['games'][i]['model'] for game in hallucination_games for i in range(len(g['games']))]
             
             sns.countplot(x=move_numbers, hue=models)
             plt.title('Hallucination Distribution by Move Number and Model')
@@ -114,7 +119,7 @@ class ResultsAnalyzer:
             plt.close()
             
         # 4. Win/Loss/Draw Statistics
-        results = [game['result'] for game in self.games_data]
+        results = [game['games'][i]['result'] for game in self.games_data.values() for i in range(len(game['games']))]
         result_counts = pd.Series(results).value_counts()
         
         plt.figure(figsize=(8, 8))
@@ -128,29 +133,41 @@ class ResultsAnalyzer:
         
     def _generate_summary_report(self):
         """Generate a summary report of all games"""
-        total_games = len(self.games_data)
-        hallucination_games = sum(1 for game in self.games_data if game['hallucination_detected'])
+        total_games = sum(data['games_played'] for data in self.games_data.values())
+        all_games_flat = [game for matchup_data in self.games_data.values() for game in matchup_data['games']]
+        
+        hallucination_games = sum(1 for game in all_games_flat if game['hallucination_detected'])
         
         report = {
             'total_games': total_games,
             'games_with_hallucinations': hallucination_games,
             'hallucination_rate': hallucination_games / total_games if total_games > 0 else 0,
-            'average_game_length': np.mean([game['game_length'] for game in self.games_data]),
-            'results_distribution': pd.Series([game['result'] for game in self.games_data]).value_counts().to_dict(),
-            'model_performance': {
-                'local_llm': {
-                    'wins': sum(1 for game in self.games_data if game['result'] == '1-0'),
-                    'losses': sum(1 for game in self.games_data if game['result'] == '0-1'),
-                    'draws': sum(1 for game in self.games_data if game['result'] == '1/2-1/2')
-                },
-                'groq_llm': {
-                    'wins': sum(1 for game in self.games_data if game['result'] == '0-1'),
-                    'losses': sum(1 for game in self.games_data if game['result'] == '1-0'),
-                    'draws': sum(1 for game in self.games_data if game['result'] == '1/2-1/2')
-                }
-            }
+            'average_game_length': np.mean([game['game_length'] for game in all_games_flat]),
+            'results_distribution': pd.Series([game['result'] for game in all_games_flat]).value_counts().to_dict(),
+            'model_performance': {}
         }
         
+        all_models = set()
+        for matchup_data in self.games_data.values():
+            for game in matchup_data['games']:
+                all_models.add(game['white_player'])
+                all_models.add(game['black_player'])
+
+        for model_name in all_models:
+            wins = sum(1 for game in all_games_flat if 
+                       (game['white_player'] == model_name and game['result'] == '1-0') or \
+                       (game['black_player'] == model_name and game['result'] == '0-1'))
+            losses = sum(1 for game in all_games_flat if 
+                         (game['white_player'] == model_name and game['result'] == '0-1') or \
+                         (game['black_player'] == model_name and game['result'] == '1-0'))
+            draws = sum(1 for game in all_games_flat if game['result'] == '1/2-1/2')
+            
+            report['model_performance'][model_name] = {
+                'wins': wins,
+                'losses': losses,
+                'draws': draws
+            }
+
         with open(f"{self.results_dir}/summary_report.json", 'w') as f:
             json.dump(report, f, indent=2)
             
@@ -185,15 +202,12 @@ class ResultsAnalyzer:
             
             <div class="section">
                 <h2>Model Performance</h2>
-                <h3>Local LLM (White)</h3>
-                <div class="metric">Wins: {report['model_performance']['local_llm']['wins']}</div>
-                <div class="metric">Losses: {report['model_performance']['local_llm']['losses']}</div>
-                <div class="metric">Draws: {report['model_performance']['local_llm']['draws']}</div>
-                
-                <h3>Groq LLM (Black)</h3>
-                <div class="metric">Wins: {report['model_performance']['groq_llm']['wins']}</div>
-                <div class="metric">Losses: {report['model_performance']['groq_llm']['losses']}</div>
-                <div class="metric">Draws: {report['model_performance']['groq_llm']['draws']}</div>
+                {''.join(f'''
+                <h3>{model_name}</h3>
+                <div class="metric">Wins: {data['wins']}</div>
+                <div class="metric">Losses: {data['losses']}</div>
+                <div class="metric">Draws: {data['draws']}</div>
+                ''' for model_name, data in report['model_performance'].items())}
             </div>
             
             <div class="section">

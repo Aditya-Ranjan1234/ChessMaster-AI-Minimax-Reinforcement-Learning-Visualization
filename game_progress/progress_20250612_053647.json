@@ -1,0 +1,546 @@
+{
+  "current_matchup_index": 0,
+  "current_game_index": 0,
+  "matchups": [
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Llama-3.3-70B-Versatile",
+      "total_games": 10,
+      "completed_games": 1
+    },
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Llama-3.1-8B-Instant",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Gemma2-9B-IT",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Llama-3.3-70B-Versatile",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Llama-3.1-8B-Instant",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Gemma2-9B-IT",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    }
+  ],
+  "results": {
+    "TinyLlama-1.1B_vs_Groq Llama-3.3-70B-Versatile": {
+      "games_played": 1,
+      "games": [
+        {
+          "game_id": "20250612_053647",
+          "result": "1/2-1/2",
+          "moves": [
+            {
+              "move": "g1h3",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "timestamp": 1749686628.3720307
+            },
+            {
+              "move": "g8f6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1",
+              "timestamp": 1749686629.033416
+            },
+            {
+              "move": "h3g5",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkb1r/pppppppp/5n2/8/8/7N/PPPPPPPP/RNBQKB1R w KQkq - 2 2",
+              "timestamp": 1749686630.367975
+            },
+            {
+              "move": "h7h5",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkb1r/pppppppp/5n2/6N1/8/8/PPPPPPPP/RNBQKB1R b KQkq - 3 2",
+              "timestamp": 1749686630.59535
+            },
+            {
+              "move": "g5h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkb1r/ppppppp1/5n2/6Np/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 3",
+              "timestamp": 1749686632.1008039
+            },
+            {
+              "move": "h8g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkb1r/pppppppN/5n2/7p/8/8/PPPPPPPP/RNBQKB1R b KQkq - 1 3",
+              "timestamp": 1749686632.355686
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkbr1/pppppppN/5n2/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 2 4",
+              "timestamp": 1749686634.3243597
+            },
+            {
+              "move": "g7g5",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkNr1/ppppppp1/5n2/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 0 4",
+              "timestamp": 1749686634.498647
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 0 5",
+              "timestamp": 1749686640.0430534
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 1 5",
+              "timestamp": 1749686640.3547726
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 2 6",
+              "timestamp": 1749686656.5907583
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 3 6",
+              "timestamp": 1749686656.9969263
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 4 7",
+              "timestamp": 1749686671.412574
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 5 7",
+              "timestamp": 1749686671.6973207
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 6 8",
+              "timestamp": 1749686673.093245
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 7 8",
+              "timestamp": 1749686673.314971
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 8 9",
+              "timestamp": 1749686682.1565773
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 9 9",
+              "timestamp": 1749686682.4324677
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 10 10",
+              "timestamp": 1749686683.80261
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 11 10",
+              "timestamp": 1749686684.1968517
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 12 11",
+              "timestamp": 1749686685.6236117
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 13 11",
+              "timestamp": 1749686685.952688
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 14 12",
+              "timestamp": 1749686687.3119254
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 15 12",
+              "timestamp": 1749686687.713265
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 16 13",
+              "timestamp": 1749686689.156356
+            },
+            {
+              "move": "g6h6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 17 13",
+              "timestamp": 1749686689.4098556
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppp1N/5n1r/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 18 14",
+              "timestamp": 1749686690.8216944
+            },
+            {
+              "move": "h6h8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/pppppp2/5n1r/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 19 14",
+              "timestamp": 1749686691.073196
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN1r/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 20 15",
+              "timestamp": 1749686714.214368
+            },
+            {
+              "move": "h8g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk2r/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 21 15",
+              "timestamp": 1749686714.5695484
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 22 16",
+              "timestamp": 1749686737.3126917
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 23 16",
+              "timestamp": 1749686737.6345646
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 24 17",
+              "timestamp": 1749686739.0668192
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 25 17",
+              "timestamp": 1749686739.3933609
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 26 18",
+              "timestamp": 1749686740.759458
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 27 18",
+              "timestamp": 1749686741.1795204
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 28 19",
+              "timestamp": 1749686742.6052253
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 29 19",
+              "timestamp": 1749686742.9201567
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 30 20",
+              "timestamp": 1749686747.2156076
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 31 20",
+              "timestamp": 1749686747.386782
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 32 21",
+              "timestamp": 1749686748.827158
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 33 21",
+              "timestamp": 1749686748.9937756
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 34 22",
+              "timestamp": 1749686750.4011996
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 35 22",
+              "timestamp": 1749686750.5954802
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 36 23",
+              "timestamp": 1749686752.0270293
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 37 23",
+              "timestamp": 1749686752.199671
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 38 24",
+              "timestamp": 1749686753.5699613
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 39 24",
+              "timestamp": 1749686753.792991
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 40 25",
+              "timestamp": 1749686776.4298124
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 41 25",
+              "timestamp": 1749686776.749017
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 42 26",
+              "timestamp": 1749686778.1312015
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 43 26",
+              "timestamp": 1749686778.430418
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 44 27",
+              "timestamp": 1749686779.8671272
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 45 27",
+              "timestamp": 1749686780.190469
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk1r1/pppppp1N/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 46 28",
+              "timestamp": 1749686781.6129553
+            },
+            {
+              "move": "g8g7",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkNr1/pppppp2/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 47 28",
+              "timestamp": 1749686781.9529057
+            },
+            {
+              "move": "f8h7",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqkN2/ppppppr1/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 48 29",
+              "timestamp": 1749686805.4173484
+            },
+            {
+              "move": "g7g6",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqk3/pppppprN/5n2/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 49 29",
+              "timestamp": 1749686805.668756
+            },
+            {
+              "move": "h7f8",
+              "model": "TinyLlama-1.1B",
+              "fen": "rnbqk3/pppppp1N/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R w KQq - 50 30",
+              "timestamp": 1749686807.0442524
+            },
+            {
+              "move": "g6g8",
+              "model": "Groq Llama-3.3-70B-Versatile",
+              "fen": "rnbqkN2/pppppp2/5nr1/6pp/8/8/PPPPPPPP/RNBQKB1R b KQq - 51 30",
+              "timestamp": 1749686807.2237298
+            }
+          ],
+          "evaluations": {
+            "local": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "groq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "hallucinations": [],
+          "game_length": 60,
+          "hallucination_detected": false,
+          "white_player": "TinyLlama-1.1B",
+          "black_player": "Groq Llama-3.3-70B-Versatile"
+        }
+      ]
+    }
+  }
+}

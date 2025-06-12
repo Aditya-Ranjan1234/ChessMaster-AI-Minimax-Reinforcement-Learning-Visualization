@@ -7,6 +7,8 @@ import time
 import os
 from typing import Dict, Optional
 import json
+from datetime import datetime
+import random
 
 class GameOrchestrator:
     def __init__(self, white_player: 'BaseLLM', black_player: 'BaseLLM', max_moves: int = 100, stop_on_hallucination: bool = True):
@@ -16,7 +18,122 @@ class GameOrchestrator:
         self.results_analyzer = ResultsAnalyzer()
         self.max_moves = max_moves
         self.stop_on_hallucination = stop_on_hallucination
+        self.current_matchup_index = 0
+        self.current_game_index = 0
+        self.matchups = []
+        self.save_dir = "game_progress"
+        os.makedirs(self.save_dir, exist_ok=True)
         
+    def save_progress(self):
+        """Save current progress to a file"""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        save_data = {
+            'current_matchup_index': self.current_matchup_index,
+            'current_game_index': self.current_game_index,
+            'matchups': [
+                {
+                    'white': m[0].name,
+                    'black': m[1].name,
+                    'total_games': m[2],
+                    'completed_games': self.results_analyzer.games_data.get(f"{m[0].name}_vs_{m[1].name}", {}).get('games_played', 0)
+                }
+                for m in self.matchups
+            ],
+            'results': self.results_analyzer.games_data
+        }
+        
+        filename = os.path.join(self.save_dir, f"progress_{timestamp}.json")
+        with open(filename, 'w') as f:
+            json.dump(save_data, f, indent=2)
+        print(f"\nProgress saved to {filename}")
+        
+    def load_progress(self, filename: str):
+        """Load progress from a file"""
+        with open(filename, 'r') as f:
+            save_data = json.load(f)
+            
+        self.current_matchup_index = save_data['current_matchup_index']
+        self.current_game_index = save_data['current_game_index']
+        
+        loaded_results = save_data['results']
+        # Convert old list format to new dict format if necessary
+        if isinstance(loaded_results, list):
+            new_results_dict = {}
+            for game_data in loaded_results:
+                white_player_name = game_data.get('white_player', 'Unknown_White')
+                black_player_name = game_data.get('black_player', 'Unknown_Black')
+                matchup_key = f"{white_player_name}_vs_{black_player_name}"
+                if matchup_key not in new_results_dict:
+                    new_results_dict[matchup_key] = {'games_played': 0, 'games': []}
+                new_results_dict[matchup_key]['games_played'] += 1
+                new_results_dict[matchup_key]['games'].append(game_data)
+            self.results_analyzer.games_data = new_results_dict
+        else:
+            self.results_analyzer.games_data = loaded_results
+        
+        print(f"\nLoaded progress from {filename}")
+        print(f"Resuming from matchup {self.current_matchup_index + 1}, game {self.current_game_index + 1}")
+        
+    def set_matchups(self, matchups: list):
+        """Set the matchups to play"""
+        self.matchups = matchups
+        
+    def play_multiple_games(self, num_games: int = None) -> Dict:
+        """Play multiple games and aggregate results"""
+        if not self.matchups:
+            raise ValueError("No matchups set. Call set_matchups() first.")
+            
+        results = []
+        try:
+            while self.current_matchup_index < len(self.matchups):
+                white_player, black_player, total_games = self.matchups[self.current_matchup_index]
+                
+                # Skip completed matchups
+                matchup_key = f"{white_player.name}_vs_{black_player.name}"
+                completed_games = self.results_analyzer.games_data.get(matchup_key, {}).get('games_played', 0)
+                
+                if completed_games >= total_games:
+                    print(f"\nMatchup {self.current_matchup_index + 1} already completed ({completed_games}/{total_games} games)")
+                    self.current_matchup_index += 1
+                    self.current_game_index = 0
+                    continue
+                
+                # Calculate remaining games for this matchup
+                remaining_games = total_games - completed_games
+                games_to_play = min(remaining_games, num_games) if num_games else remaining_games
+                
+                print(f"\n--- Starting Matchup {self.current_matchup_index + 1}: {white_player.name} (White) vs. {black_player.name} (Black) ---")
+                print(f"Playing {games_to_play} games (already completed {completed_games}/{total_games})")
+                
+                for i in range(games_to_play):
+                    print(f"\n--- Playing game {completed_games + i + 1}/{total_games} for {white_player.name} (White) vs {black_player.name} (Black) ---")
+                    game_result = self.play_game()
+                    results.append(game_result)
+                    
+                    # Save progress after each game
+                    self.save_progress()
+                    
+                    # Reset state for next game
+                    self.state_tracker.reset()
+                    
+                self.current_matchup_index += 1
+                self.current_game_index = 0
+                
+        except KeyboardInterrupt:
+            print("\nGame interrupted by user. Progress has been saved.")
+            self.save_progress()
+            return {
+                'games_played': len(results),
+                'results': results,
+                'summary': self.results_analyzer.games_data
+            }
+            
+        return {
+            'games_played': len(results),
+            'results': results,
+            'summary': self.results_analyzer.games_data
+        }
+
     def play_game(self) -> Dict:
         """Play a complete game between the two models"""
         game = chess.pgn.Game()
@@ -28,18 +145,33 @@ class GameOrchestrator:
         move_count = 0
         game_ended = False
         
+        # Add opening variety by suggesting a random opening move
+        opening_moves = [
+            "e2e4",  # King's Pawn
+            "d2d4",  # Queen's Pawn
+            "c2c4",  # English Opening
+            "g1f3",  # Reti Opening
+            "b1c3",  # Dunst Opening
+            "e2e3",  # Van't Kruijs Opening
+            "a2a3",  # Anderssen's Opening
+            "h2h3",  # Clemenz Opening
+            "g2g3",  # Benko Opening
+            "b2b3"   # Larsen's Opening
+        ]
+        suggested_opening = random.choice(opening_moves)
+        
         while not game_ended and move_count < self.max_moves:
             # Get current position
             current_fen = self.state_tracker.current_fen
-            # A temporary board for validation, as the main board is in state_tracker
-            current_board = chess.Board(current_fen) 
+            # Use the state tracker's board for validation
+            current_board = self.state_tracker.board
             
             # Determine whose turn it is
             is_white_turn = current_board.turn == chess.WHITE
             current_model = self.white_player if is_white_turn else self.black_player
             
             # Get move from current model
-            move_data = current_model.get_move(current_fen)
+            move_data = current_model.get_move(current_fen, suggested_opening if move_count == 0 else None)
             if move_data['move'] is None:
                 print(f"Game ended because {current_model.name} failed to generate a move.")
                 game_ended = True
@@ -66,7 +198,6 @@ class GameOrchestrator:
                     # Fallback to a random legal move if format is invalid
                     move = next(iter(current_board.legal_moves)) 
                     move_data['move'] = move.uci()
-
 
             # Validate move
             if not self._validate_move(current_board, move, move_data['model']):
@@ -123,6 +254,7 @@ class GameOrchestrator:
             if self.state_tracker.board.is_game_over():
                 game_ended = True
                 result = self._get_game_result(self.state_tracker.board)
+                print(f"\nGame ended: {result}")
                 
             move_count += 1
             
@@ -130,7 +262,9 @@ class GameOrchestrator:
         game_result = {
             'result': result if game_ended else "1/2-1/2",  # Draw if max moves reached
             'moves_played': move_count,
-            'hallucination_detected': bool(self.results_analyzer.current_game['hallucinations']) # Check if any hallucinations were recorded for this game
+            'hallucination_detected': bool(self.results_analyzer.current_game['hallucinations']),
+            'white_player': self.white_player.name,  # Add white player name
+            'black_player': self.black_player.name   # Add black player name
         }
         self.results_analyzer.end_game(game_result)
         
@@ -140,51 +274,29 @@ class GameOrchestrator:
             'hallucination_detected': game_result['hallucination_detected'],
             'pgn': str(game)
         }
-        
-    def _validate_move(self, board: chess.Board, move: chess.Move, model: str) -> bool:
-        """Validate a move and detect hallucinations"""
+
+    def _get_game_result(self, board: chess.Board) -> str:
+        """Determine the game result based on the board state"""
+        if board.is_checkmate():
+            return "1-0" if board.turn == chess.BLACK else "0-1" # Current turn just got checkmated
+        elif board.is_stalemate() or board.is_insufficient_material() or board.is_seventyfive_moves() or board.is_fivefold_repetition():
+            return "1/2-1/2"
+        else:
+            return "*" # Game still ongoing, or other unknown result
+
+    def _validate_move(self, board: chess.Board, move: chess.Move, model_name: str) -> bool:
+        """Validate if the proposed move is legal on the current board."""
         if move not in board.legal_moves:
-            # Record hallucination
+            print(f"Hallucination: {model_name} attempted an illegal move: {move.uci()}")
             self.results_analyzer.add_hallucination({
                 'move': move.uci(),
-                'model': model,
+                'model': model_name,
                 'move_number': len(board.move_stack) + 1,
                 'fen': board.fen(),
                 'timestamp': time.time()
             })
             return False
         return True
-        
-    def _get_game_result(self, board: chess.Board) -> str:
-        """Get the game result in standard notation"""
-        if board.is_checkmate():
-            return "1-0" if board.turn == chess.BLACK else "0-1"
-        elif board.is_stalemate():
-            return "1/2-1/2"
-        elif board.is_insufficient_material():
-            return "1/2-1/2"
-        elif board.is_fifty_moves():
-            return "1/2-1/2"
-        elif board.is_repetition():
-            return "1/2-1/2"
-        return "1/2-1/2"  # Default to draw
-        
-    def play_multiple_games(self, num_games: int) -> Dict:
-        """Play multiple games and aggregate results"""
-        results = []
-        for i in range(num_games):
-            print(f"\n--- Playing game {i+1}/{num_games} for {self.white_player.name} (White) vs {self.black_player.name} (Black) ---")
-            game_result = self.play_game()
-            results.append(game_result)
-            
-            # Reset state for next game
-            self.state_tracker.reset() # Reset the board in the ChessStateTracker for a fresh game
-            
-        return {
-            'games_played': num_games,
-            'results': results,
-            'summary': self.results_analyzer.games_data # This will contain all games played by this orchestrator instance
-        }
 
 if __name__ == "__main__":
     # Instantiate your LLMs
@@ -192,49 +304,33 @@ if __name__ == "__main__":
     
     # Groq-backed models
     groq_mixtral = GroqInterface(model_name="llama-3.3-70b-versatile", name="Groq Llama-3.3-70B-Versatile")
-    # Assuming Groq API offers these models, use their specific identifiers if different
     groq_llama_3_1_8b_instant = GroqInterface(model_name="llama-3.1-8b-instant", name="Groq Llama-3.1-8B-Instant")
     groq_gemma_7b_it = GroqInterface(model_name="gemma2-9b-it", name="Groq Gemma2-9B-IT")
     
     # Define your matchups as a list of (white_player, black_player, num_games) tuples
     matchups = [
-        (local_llm, groq_mixtral, 10), # TinyLlama (White) vs. Groq Llama-3.3-70B-Versatile (Black)
-        (groq_mixtral, local_llm, 10), # Groq Llama-3.3-70B-Versatile (White) vs. TinyLlama (Black)
-        
-        (local_llm, groq_llama_3_1_8b_instant, 10), # TinyLlama (White) vs. Groq Llama-3.1-8B-Instant (Black)
-        (groq_llama_3_1_8b_instant, local_llm, 10), # Groq Llama-3.1-8B-Instant (White) vs. TinyLlama (Black)
-        
-        (local_llm, groq_gemma_7b_it, 10), # TinyLlama (White) vs. Groq Gemma2-9B-IT (Black)
-        (groq_gemma_7b_it, local_llm, 10), # Groq Gemma2-9B-IT (White) vs. TinyLlama (Black)
+        (local_llm, groq_mixtral, 10),
+        (local_llm, groq_llama_3_1_8b_instant, 10),
+        (local_llm, groq_gemma_7b_it, 10),
+        (groq_mixtral, local_llm, 10),
+        (groq_llama_3_1_8b_instant, local_llm, 10),
+        (groq_gemma_7b_it, local_llm, 10)
     ]
     
-    all_results_summary = []
+    # Create orchestrator and set matchups
+    orchestrator = GameOrchestrator(local_llm, groq_mixtral)
+    orchestrator.set_matchups(matchups)
     
-    for i, (white_player, black_player, num_games) in enumerate(matchups):
-        print(f"\n--- Starting Matchup {i+1}: {white_player.name} (White) vs. {black_player.name} (Black) ---")
-        orchestrator = GameOrchestrator(
-            white_player=white_player,
-            black_player=black_player,
-            max_moves=100, # Max moves per game
-            stop_on_hallucination=True # Stops the game if a hallucination is detected
-        )
-        
-        current_matchup_results = orchestrator.play_multiple_games(num_games)
-        all_results_summary.append(current_matchup_results)
-        print(f"--- Matchup {i+1} Finished ---")
+    # Check if there's a saved progress file
+    save_dir = "game_progress"
+    if os.path.exists(save_dir):
+        progress_files = sorted([f for f in os.listdir(save_dir) if f.startswith("progress_")])
+        if progress_files:
+            latest_progress = os.path.join(save_dir, progress_files[-1])
+            print(f"Found saved progress: {latest_progress}")
+            load = input("Load saved progress? (y/n): ").lower() == 'y'
+            if load:
+                orchestrator.load_progress(latest_progress)
     
-    # Generate combined visualizations after all matchups are done
-    print("\nGenerating combined visualizations...")
-    # A new ResultsAnalyzer instance is needed to combine results from all matchups
-    combined_analyzer = ResultsAnalyzer()
-    for matchup_results in all_results_summary:
-        for game_data in matchup_results['results']: # Note: 'results' not 'summary'
-            combined_analyzer.games_data.append(game_data)
-    combined_analyzer.generate_visualizations()
-
-    print("\nAll matchups completed. Check the 'results' folder for detailed data and visualizations.")
-    
-    # You can further process all_results_summary if needed
-    # For example, to save an overall summary of all matchups
-    with open("results/overall_matchups_summary.json", "w") as f:
-        json.dump(all_results_summary, f, indent=2) 
+    # Play games
+    orchestrator.play_multiple_games() 

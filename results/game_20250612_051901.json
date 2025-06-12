@@ -1,0 +1,207 @@
+{
+  "game_id": "20250612_051901",
+  "result": "1/2-1/2",
+  "moves": [
+    {
+      "move": "g1h3",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "timestamp": 1749685693.299007
+    },
+    {
+      "move": "g8f6",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1",
+      "timestamp": 1749685693.8322423
+    },
+    {
+      "move": "h3g5",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkb1r/pppppppp/5n2/8/8/7N/PPPPPPPP/RNBQKB1R w KQkq - 2 2",
+      "timestamp": 1749685695.197813
+    },
+    {
+      "move": "h7h5",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkb1r/pppppppp/5n2/6N1/8/8/PPPPPPPP/RNBQKB1R b KQkq - 3 2",
+      "timestamp": 1749685695.4265394
+    },
+    {
+      "move": "g5h7",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkb1r/ppppppp1/5n2/6Np/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 3",
+      "timestamp": 1749685696.900741
+    },
+    {
+      "move": "g7g6",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkb1r/pppppppN/5n2/7p/8/8/PPPPPPPP/RNBQKB1R b KQkq - 1 3",
+      "timestamp": 1749685697.1114485
+    },
+    {
+      "move": "h7f8",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkb1r/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 4",
+      "timestamp": 1749685698.848987
+    },
+    {
+      "move": "h8g8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkN1r/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 4",
+      "timestamp": 1749685699.0013156
+    },
+    {
+      "move": "f8h7",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkNr1/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 1 5",
+      "timestamp": 1749685704.7628942
+    },
+    {
+      "move": "g8h8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqk1r1/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 2 5",
+      "timestamp": 1749685705.0161812
+    },
+    {
+      "move": "h7f8",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqk2r/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 3 6",
+      "timestamp": 1749685710.4773293
+    },
+    {
+      "move": "h8g8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkN1r/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 4 6",
+      "timestamp": 1749685710.7123218
+    },
+    {
+      "move": "f8h7",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkNr1/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 5 7",
+      "timestamp": 1749685725.6524415
+    },
+    {
+      "move": "g8h8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqk1r1/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 6 7",
+      "timestamp": 1749685726.0668683
+    },
+    {
+      "move": "h7f8",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqk2r/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 7 8",
+      "timestamp": 1749685727.4089682
+    },
+    {
+      "move": "h8g8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkN1r/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 8 8",
+      "timestamp": 1749685727.5787852
+    },
+    {
+      "move": "f8h7",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkNr1/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 9 9",
+      "timestamp": 1749685728.9865553
+    },
+    {
+      "move": "g8h8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqk1r1/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 10 9",
+      "timestamp": 1749685729.3032408
+    },
+    {
+      "move": "h7f8",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqk2r/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 11 10",
+      "timestamp": 1749685730.7058794
+    },
+    {
+      "move": "h8g8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkN1r/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 12 10",
+      "timestamp": 1749685730.8728733
+    },
+    {
+      "move": "f8h7",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkNr1/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 13 11",
+      "timestamp": 1749685739.1944773
+    },
+    {
+      "move": "g8h8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqk1r1/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 14 11",
+      "timestamp": 1749685739.639211
+    },
+    {
+      "move": "h7f8",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqk2r/pppppp1N/5np1/7p/8/8/PPPPPPPP/RNBQKB1R w KQq - 15 12",
+      "timestamp": 1749685741.0585203
+    },
+    {
+      "move": "h8g8",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkN1r/pppppp2/5np1/7p/8/8/PPPPPPPP/RNBQKB1R b KQq - 16 12",
+      "timestamp": 1749685741.344508
+    }
+  ],
+  "evaluations": {
+    "local": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "groq": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "hallucinations": [],
+  "game_length": 24,
+  "hallucination_detected": false
+}
