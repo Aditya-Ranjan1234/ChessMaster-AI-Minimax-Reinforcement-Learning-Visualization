@@ -1,0 +1,15 @@
+=== Terminal Log for Game test_game_001 ===
+Timestamp: 2025-06-28T14:37:20.037909
+Total Lines: 6
+
+==================================================
+STDOUT:
+==================================================
+This is test stdout output
+Another line of output
+
+==================================================
+STDERR:
+==================================================
+d:\CHess\demo\test_terminal_logging.py:44: UserWarning: This is a test warning
+  warnings.warn("This is a test warning")

@@ -1,0 +1,19 @@
+=== Terminal Log for Game 20250629_042613 ===
+Timestamp: 2025-06-29T04:26:13.262564
+Total Lines: 10
+
+==================================================
+STDOUT:
+==================================================
+Local LLM chose move: g1h3
+Error communicating with Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01js01n9k2fjxr2h6wgpqnzdg5` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100028, Requested 132. Please try again in 2m19.092s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Retrying...
+Error communicating with Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01js01n9k2fjxr2h6wgpqnzdg5` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100028, Requested 132. Please try again in 2m19.015s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Retrying...
+Error communicating with Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01js01n9k2fjxr2h6wgpqnzdg5` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100028, Requested 132. Please try again in 2m18.917s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Retrying...
+Error communicating with Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01js01n9k2fjxr2h6wgpqnzdg5` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100028, Requested 132. Please try again in 2m18.817999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Retrying...
+Error communicating with Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01js01n9k2fjxr2h6wgpqnzdg5` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100028, Requested 132. Please try again in 2m18.716s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Retrying...
+Groq LLM failed to generate a legal move after 5 attempts. Model loses.
+Game ended because Groq Llama-3.3-70B-Versatile failed to generate a move.
+
+==================================================
+STDERR:
+==================================================

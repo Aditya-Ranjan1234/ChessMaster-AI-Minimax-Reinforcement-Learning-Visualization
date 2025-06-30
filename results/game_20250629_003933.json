@@ -1,0 +1,41 @@
+{
+  "game_id": "20250629_003933",
+  "result": "1-0",
+  "moves": [
+    {
+      "move": "g1h3",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "timestamp": 1751137724.6552215
+    },
+    {
+      "move": "e7e5",
+      "model": "Groq Llama-3.3-70B-Versatile",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1",
+      "timestamp": 1751137724.9096522
+    },
+    {
+      "move": "h3g5",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/8/7N/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
+      "timestamp": 1751137761.2819521
+    }
+  ],
+  "evaluations": {
+    "local": [
+      0,
+      0,
+      0
+    ],
+    "groq": [
+      0,
+      0,
+      0
+    ]
+  },
+  "hallucinations": [],
+  "game_length": 3,
+  "hallucination_detected": false,
+  "white_player": "TinyLlama-1.1B",
+  "black_player": "Groq Llama-3.3-70B-Versatile"
+}

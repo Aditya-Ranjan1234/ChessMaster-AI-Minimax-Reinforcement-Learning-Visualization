@@ -51,6 +51,10 @@ class ResultsAnalyzer:
             'black_player': game_result['black_player']
         }
         
+        # Add terminal log information if available
+        if 'terminal_logs' in game_result:
+            game_data['terminal_logs'] = game_result['terminal_logs']
+        
         matchup_key = f"{game_data['white_player']}_vs_{game_data['black_player']}"
         if matchup_key not in self.games_data:
             self.games_data[matchup_key] = {'games_played': 0, 'games': []}

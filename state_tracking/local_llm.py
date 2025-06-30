@@ -26,12 +26,16 @@ class LocalLLM(BaseLLM):
         board = chess.Board(fen_string)
         legal_moves = [move.uci() for move in board.legal_moves]
         
-        if opening_move and len(board.move_stack) == 0: # Only suggest opening if it's the very first move
-            prompt = f"""Given the current chess position in FEN format: {fen_string},
-            and the legal moves are: {", ".join(legal_moves)}. As the first move, consider playing {opening_move}. What is your next move? Please respond with only the UCI move (e.g., e2e4)."""
+        # Get move history for context
+        move_history = []
+        for i, move in enumerate(board.move_stack):
+            move_history.append(f"{i+1}. {move.uci()}")
+        move_history_str = ", ".join(move_history) if move_history else "No moves played yet"
+        
+        if opening_move and len(board.move_stack) == 0:
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Opening principle: Play {opening_move} as a strong opening move.\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
         else:
-            prompt = f"""Given the current chess position in FEN format: {fen_string},
-            and the legal moves are: {", ".join(legal_moves)}. What is your next move? Please respond with only the UCI move (e.g., e2e4)."""
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
         
         attempts = 0
         max_attempts = 5
@@ -44,14 +48,10 @@ class LocalLLM(BaseLLM):
                 eos_token_id=self.tokenizer.eos_token_id,
                 max_new_tokens=50,
             )
-            
             generated_text = sequences[0]['generated_text']
-            # Extract the move using regex, looking for a UCI pattern
             match = re.search(r'[a-h][1-8][a-h][1-8]([qnrb])?', generated_text)
-            
             if match:
                 move_uci = match.group(0)
-                # Validate the move against the actual board's legal moves
                 try:
                     parsed_move = chess.Move.from_uci(move_uci)
                     if parsed_move in board.legal_moves:
@@ -65,11 +65,5 @@ class LocalLLM(BaseLLM):
                 print(f"Local LLM failed to generate a valid move format. Output: {generated_text}. Retrying...")
             attempts += 1
         
-        print("Local LLM failed to generate a legal move after multiple attempts. Choosing a random legal move.")
-        # Fallback: choose a random legal move if LLM consistently fails
-        if legal_moves:
-            random_move = random.choice(legal_moves) # Pick a random legal move
-            print(f"Choosing random legal move as fallback: {random_move}")
-            return {'move': random_move, 'model': self.name}
-        else:
-            return {'move': None, 'model': self.name} # Should not happen in a valid game 
+        print(f"Local LLM failed to generate a legal move after {max_attempts} attempts. Model loses.")
+        return {'move': None, 'model': self.name} 

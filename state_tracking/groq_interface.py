@@ -20,13 +20,17 @@ class GroqInterface(BaseLLM):
         board = chess.Board(fen_string)
         legal_moves = [move.uci() for move in board.legal_moves]
         
-        if opening_move and len(board.move_stack) == 0: # Only suggest opening if it's the very first move
-            prompt = f"""Given the current chess position in FEN format: {fen_string},
-            and the legal moves are: {", ".join(legal_moves)}. As the first move, consider playing {opening_move}. What is your next move? Please respond with only the UCI move (e.g., e2e4)."""
+        # Format move history as PGN
+        pgn_game = chess.pgn.Game()
+        node = pgn_game
+        for move in board.move_stack:
+            node = node.add_variation(move)
+        pgn_str = str(pgn_game.mainline()) if board.move_stack else "No moves played yet"
+        
+        if opening_move and len(board.move_stack) == 0:
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history (PGN): {pgn_str}\n- Legal moves: {', '.join(legal_moves)}\n- Opening principle: Play {opening_move} as a strong opening move.\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Do NOT repeat any move from the move history above.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
         else:
-            prompt = f"""Given the current chess position in FEN format: {fen_string},
-            and the legal moves are: {", ".join(legal_moves)}. What is your next move? Please respond with only the UCI move (e.g., e2e4)."""
-
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history (PGN): {pgn_str}\n- Legal moves: {', '.join(legal_moves)}\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Do NOT repeat any move from the move history above.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
         attempts = 0
         max_attempts = 5
         while attempts < max_attempts:
@@ -40,17 +44,12 @@ class GroqInterface(BaseLLM):
                     ],
                     model=self.model_name,
                     temperature=0.7,
-                    max_tokens=200, # Increased max_tokens to allow for more verbose responses if needed
+                    max_tokens=200,
                 )
-
                 response_content = chat_completion.choices[0].message.content
-                
-                # Extract the move using regex, looking for a UCI pattern
                 match = re.search(r'[a-h][1-8][a-h][1-8]([qnrb])?', response_content)
-                
                 if match:
                     move_uci = match.group(0)
-                    # Validate the move against the actual board's legal moves
                     try:
                         parsed_move = chess.Move.from_uci(move_uci)
                         if parsed_move in board.legal_moves:
@@ -65,12 +64,5 @@ class GroqInterface(BaseLLM):
             except Exception as e:
                 print(f"Error communicating with Groq API: {e}. Retrying...")
             attempts += 1
-
-        print("Groq LLM failed to generate a legal move after multiple attempts. Choosing a random legal move.")
-        # Fallback: choose a random legal move if LLM consistently fails
-        if legal_moves:
-            random_move = random.choice(legal_moves) # Pick a random legal move
-            print(f"Choosing random legal move as fallback: {random_move}")
-            return {'move': random_move, 'model': self.name}
-        else:
-            return {'move': None, 'model': self.name} # Should not happen in a valid game 
+        print(f"Groq LLM failed to generate a legal move after {max_attempts} attempts. Model loses.")
+        return {'move': None, 'model': self.name} 

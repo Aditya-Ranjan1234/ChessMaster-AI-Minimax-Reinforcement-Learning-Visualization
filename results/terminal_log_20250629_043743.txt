@@ -1,0 +1,19 @@
+=== Terminal Log for Game 20250629_043743 ===
+Timestamp: 2025-06-29T04:37:43.825426
+Total Lines: 10
+
+==================================================
+STDOUT:
+==================================================
+Local LLM chose move: g1h3
+Error communicating with Groq API: no healthy upstream. Retrying...
+Error communicating with Groq API: no healthy upstream. Retrying...
+Error communicating with Groq API: no healthy upstream. Retrying...
+Error communicating with Groq API: no healthy upstream. Retrying...
+Error communicating with Groq API: no healthy upstream. Retrying...
+Groq LLM failed to generate a legal move after 5 attempts. Model loses.
+Game ended because Groq Llama-3.3-70B-Versatile failed to generate a move.
+
+==================================================
+STDERR:
+==================================================

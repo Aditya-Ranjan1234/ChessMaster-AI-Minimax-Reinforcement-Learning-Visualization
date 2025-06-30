@@ -1,0 +1,21 @@
+=== Terminal Log for Game 20250629_004539 ===
+Timestamp: 2025-06-29T00:45:39.726967
+Total Lines: 12
+
+==================================================
+STDOUT:
+==================================================
+Local LLM chose move: g1h3
+Groq LLM chose move: e7e5
+Local LLM chose move: h3g5
+Groq LLM generated illegal move: e7e5. Retrying...
+Groq LLM generated illegal move: e7e5. Retrying...
+Groq LLM generated illegal move: e7e5. Retrying...
+Groq LLM generated illegal move: e7e5. Retrying...
+Groq LLM generated illegal move: e7e5. Retrying...
+Groq LLM failed to generate a legal move after 5 attempts. Model loses.
+Game ended because Groq Llama-3.3-70B-Versatile failed to generate a move.
+
+==================================================
+STDERR:
+==================================================

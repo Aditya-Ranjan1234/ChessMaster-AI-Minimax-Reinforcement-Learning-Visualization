@@ -1,14 +1,83 @@
 import chess
-from state_tracking.state_tracker import ChessStateTracker
-from state_tracking.local_llm import LocalLLM
-from state_tracking.groq_interface import GroqInterface
-from state_tracking.results_analyzer import ResultsAnalyzer
+from state_tracker import ChessStateTracker
+from local_llm import LocalLLM
+from groq_interface import GroqInterface
+from results_analyzer import ResultsAnalyzer
 import time
 import os
 from typing import Dict, Optional
 import json
 from datetime import datetime
 import random
+import sys
+import io
+from contextlib import redirect_stdout, redirect_stderr
+
+class TerminalLogger:
+    """Captures all terminal output and saves it to files"""
+    
+    def __init__(self, log_dir="results"):
+        self.log_dir = log_dir
+        os.makedirs(log_dir, exist_ok=True)
+        self.log_buffer = []
+        self.original_stdout = sys.stdout
+        self.original_stderr = sys.stderr
+        self.stdout_capture = io.StringIO()
+        self.stderr_capture = io.StringIO()
+        
+    def start_logging(self):
+        """Start capturing terminal output"""
+        sys.stdout = self.stdout_capture
+        sys.stderr = self.stderr_capture
+        
+    def stop_logging(self):
+        """Stop capturing and restore original stdout/stderr"""
+        sys.stdout = self.original_stdout
+        sys.stderr = self.original_stderr
+        
+    def get_captured_output(self):
+        """Get all captured output"""
+        stdout_content = self.stdout_capture.getvalue()
+        stderr_content = self.stderr_capture.getvalue()
+        return stdout_content, stderr_content
+        
+    def save_log(self, game_id: str):
+        """Save captured output to log file"""
+        stdout_content, stderr_content = self.get_captured_output()
+        
+        log_data = {
+            'game_id': game_id,
+            'timestamp': datetime.now().isoformat(),
+            'stdout': stdout_content,
+            'stderr': stderr_content,
+            'total_lines': len(stdout_content.split('\n')) + len(stderr_content.split('\n'))
+        }
+        
+        # Save as JSON for structured access
+        log_filename = os.path.join(self.log_dir, f"terminal_log_{game_id}.json")
+        with open(log_filename, 'w') as f:
+            json.dump(log_data, f, indent=2)
+            
+        # Save as plain text for easy reading
+        text_filename = os.path.join(self.log_dir, f"terminal_log_{game_id}.txt")
+        with open(text_filename, 'w') as f:
+            f.write(f"=== Terminal Log for Game {game_id} ===\n")
+            f.write(f"Timestamp: {log_data['timestamp']}\n")
+            f.write(f"Total Lines: {log_data['total_lines']}\n")
+            f.write("\n" + "="*50 + "\n")
+            f.write("STDOUT:\n")
+            f.write("="*50 + "\n")
+            f.write(stdout_content)
+            f.write("\n" + "="*50 + "\n")
+            f.write("STDERR:\n")
+            f.write("="*50 + "\n")
+            f.write(stderr_content)
+            
+        # Clear buffers for next game
+        self.stdout_capture = io.StringIO()
+        self.stderr_capture = io.StringIO()
+        
+        return log_filename, text_filename
 
 class GameOrchestrator:
     def __init__(self, white_player: 'BaseLLM', black_player: 'BaseLLM', max_moves: int = 100, stop_on_hallucination: bool = True):
@@ -23,6 +92,9 @@ class GameOrchestrator:
         self.matchups = []
         self.save_dir = "game_progress"
         os.makedirs(self.save_dir, exist_ok=True)
+        
+        # Initialize terminal logger
+        self.terminal_logger = TerminalLogger()
         
     def save_progress(self):
         """Save current progress to a file"""
@@ -107,17 +179,35 @@ class GameOrchestrator:
                 
                 for i in range(games_to_play):
                     print(f"\n--- Playing game {completed_games + i + 1}/{total_games} for {white_player.name} (White) vs {black_player.name} (Black) ---")
+                    
+                    # Start terminal logging for this game
+                    self.terminal_logger.start_logging()
+                    
                     game_result = self.play_game()
                     results.append(game_result)
+                    
+                    # Stop logging and save terminal output
+                    self.terminal_logger.stop_logging()
+                    game_id = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    log_json, log_txt = self.terminal_logger.save_log(game_id)
+                    
+                    # Add terminal log info to game result
+                    game_result['terminal_logs'] = {
+                        'json_file': log_json,
+                        'text_file': log_txt
+                    }
                     
                     # Save progress after each game
                     self.save_progress()
                     
                     # Reset state for next game
                     self.state_tracker.reset()
-                    
-                self.current_matchup_index += 1
-                self.current_game_index = 0
+                
+                # Only increment matchup index if this matchup is now completed
+                updated_completed_games = self.results_analyzer.games_data.get(matchup_key, {}).get('games_played', 0)
+                if updated_completed_games >= total_games:
+                    self.current_matchup_index += 1
+                    self.current_game_index = 0
                 
         except KeyboardInterrupt:
             print("\nGame interrupted by user. Progress has been saved.")
@@ -191,24 +281,13 @@ class GameOrchestrator:
                     'fen': current_fen,
                     'timestamp': time.time()
                 })
-                if self.stop_on_hallucination:
-                    break
-                else:
-                    print(f"Invalid move format by {current_model.name}, but game continues with random move.")
-                    # Fallback to a random legal move if format is invalid
-                    move = next(iter(current_board.legal_moves)) 
-                    move_data['move'] = move.uci()
-
+                break
+            
             # Validate move
             if not self._validate_move(current_board, move, move_data['model']):
                 game_ended = True
                 result = "0-1" if is_white_turn else "1-0"  # Current player loses
-                # The _validate_move method already records hallucination.
-                if self.stop_on_hallucination:
-                    print(f"Game stopped due to hallucination by {move_data['model']}")
-                    break
-                else:
-                    print(f"Hallucination detected by {move_data['model']}, but game continues.")
+                break
                 
             # Make the move via state tracker (this updates the actual board state)
             move_successful, move_message = self.state_tracker.make_move(move.uci())
@@ -227,11 +306,7 @@ class GameOrchestrator:
                     'fen': current_fen,
                     'timestamp': time.time()
                 })
-                if self.stop_on_hallucination:
-                    print(f"Game stopped due to unplayable move by {current_model.name}")
-                    break
-                else:
-                    print(f"Unplayable move detected by {current_model.name}, but game continues.")
+                break
             
             # Record move in game (for PGN generation)
             node = node.add_variation(move)
@@ -272,7 +347,8 @@ class GameOrchestrator:
             'result': game_result['result'],
             'moves_played': move_count,
             'hallucination_detected': game_result['hallucination_detected'],
-            'pgn': str(game)
+            'pgn': str(game),
+            'terminal_logs': game_result.get('terminal_logs', {})  # Include terminal log info
         }
 
     def _get_game_result(self, board: chess.Board) -> str:

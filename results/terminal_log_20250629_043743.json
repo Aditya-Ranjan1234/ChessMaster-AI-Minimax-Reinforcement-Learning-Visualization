@@ -1,0 +1,7 @@
+{
+  "game_id": "20250629_043743",
+  "timestamp": "2025-06-29T04:37:43.825426",
+  "stdout": "Local LLM chose move: g1h3\nError communicating with Groq API: no healthy upstream. Retrying...\nError communicating with Groq API: no healthy upstream. Retrying...\nError communicating with Groq API: no healthy upstream. Retrying...\nError communicating with Groq API: no healthy upstream. Retrying...\nError communicating with Groq API: no healthy upstream. Retrying...\nGroq LLM failed to generate a legal move after 5 attempts. Model loses.\nGame ended because Groq Llama-3.3-70B-Versatile failed to generate a move.\n",
+  "stderr": "",
+  "total_lines": 10
+}

@@ -1,0 +1,25 @@
+{
+  "game_id": "20250629_015546",
+  "result": "1-0",
+  "moves": [
+    {
+      "move": "g1h3",
+      "model": "TinyLlama-1.1B",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "timestamp": 1751142346.3214285
+    }
+  ],
+  "evaluations": {
+    "local": [
+      0
+    ],
+    "groq": [
+      0
+    ]
+  },
+  "hallucinations": [],
+  "game_length": 1,
+  "hallucination_detected": false,
+  "white_player": "TinyLlama-1.1B",
+  "black_player": "Groq Llama-3.3-70B-Versatile"
+}

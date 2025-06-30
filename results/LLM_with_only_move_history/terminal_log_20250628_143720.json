@@ -1,0 +1,7 @@
+{
+  "game_id": "20250628_143720",
+  "timestamp": "2025-06-28T14:37:20.056672",
+  "stdout": "Hallucination: Test-Black attempted an illegal move: e2e4\n",
+  "stderr": "",
+  "total_lines": 3
+}

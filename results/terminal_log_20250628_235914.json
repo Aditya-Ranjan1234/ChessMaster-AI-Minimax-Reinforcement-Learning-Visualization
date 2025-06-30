@@ -1,0 +1,7 @@
+{
+  "game_id": "20250628_235914",
+  "timestamp": "2025-06-28T23:59:14.886657",
+  "stdout": "Local LLM chose move: g1h3\nGroq LLM chose move: e7e5\nLocal LLM chose move: h3g5\nGroq LLM generated illegal move: e7e5. Retrying...\nGroq LLM generated illegal move: e7e5. Retrying...\nGroq LLM generated illegal move: e7e5. Retrying...\nGroq LLM generated illegal move: e7e5. Retrying...\nGroq LLM generated illegal move: e7e5. Retrying...\nGroq LLM failed to generate a legal move after 5 attempts. Model loses.\nGame ended because Groq Llama-3.3-70B-Versatile failed to generate a move.\n",
+  "stderr": "",
+  "total_lines": 12
+}

@@ -9,8 +9,8 @@ class ChessStateTracker:
         self.board = chess.Board()
         self.move_history: List[str] = []
         self.state_history: List[Dict] = []
-        self.current_fen: str = self.board.fen()
         self.game_start_time = datetime.now()
+        self._update_state()  # Initialize the current_fen and state_history
         
     def make_move(self, move: str) -> Tuple[bool, str]:
         """

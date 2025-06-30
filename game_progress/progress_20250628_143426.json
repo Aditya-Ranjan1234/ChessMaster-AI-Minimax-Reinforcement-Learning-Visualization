@@ -1,0 +1,43 @@
+{
+  "current_matchup_index": 0,
+  "current_game_index": 0,
+  "matchups": [
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Llama-3.3-70B-Versatile",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Llama-3.1-8B-Instant",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "TinyLlama-1.1B",
+      "black": "Groq Gemma2-9B-IT",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Llama-3.3-70B-Versatile",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Llama-3.1-8B-Instant",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    },
+    {
+      "white": "Groq Gemma2-9B-IT",
+      "black": "TinyLlama-1.1B",
+      "total_games": 10,
+      "completed_games": 0
+    }
+  ],
+  "results": {}
+}

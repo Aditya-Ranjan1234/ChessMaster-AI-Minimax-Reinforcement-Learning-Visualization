@@ -1,0 +1,7 @@
+{
+  "game_id": "test_game_001",
+  "timestamp": "2025-06-28T14:37:20.037909",
+  "stdout": "This is test stdout output\nAnother line of output\n",
+  "stderr": "d:\\CHess\\demo\\test_terminal_logging.py:44: UserWarning: This is a test warning\n  warnings.warn(\"This is a test warning\")\n",
+  "total_lines": 6
+}
