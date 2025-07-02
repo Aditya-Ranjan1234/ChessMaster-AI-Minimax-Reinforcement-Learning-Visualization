@@ -33,17 +33,16 @@ class LocalLLM(BaseLLM):
         move_history_str = ", ".join(move_history) if move_history else "No moves played yet"
         
         if opening_move and len(board.move_stack) == 0:
-            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Opening principle: Play {opening_move} as a strong opening move.\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Opening principle: Play {opening_move} as a strong opening move.\n- Evaluate the position for both sides.\n- Choose ONLY from this list of legal moves.\n- Select a move that develops a new piece, controls the center (squares e4, d4, e5, d5), supports other pieces, avoids unnecessary repetition, avoids moving the same piece multiple times in the opening, and considers king safety (castling, not exposing the king).\n- Do NOT just move the same piece back and forth.\n- Respond with ONE move in UCI format (e.g., e2e4), and nothing else.\n"""
         else:
-            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Evaluate the position for both sides.\n- Suggest a move that develops a piece, controls the center, and avoids repetition.\n- Respond ONLY with the UCI move (e.g., e2e4).\n"""
+            prompt = f"""Given the current chess position in FEN format: {fen_string},\n\n- Move history: {move_history_str}\n- Legal moves: {', '.join(legal_moves)}\n- Evaluate the position for both sides.\n- Choose ONLY from this list of legal moves.\n- Select a move that develops a new piece, controls the center (squares e4, d4, e5, d5), supports other pieces, avoids unnecessary repetition, avoids moving the same piece multiple times in the opening, and considers king safety (castling, not exposing the king).\n- Do NOT just move the same piece back and forth.\n- Respond with ONE move in UCI format (e.g., e2e4), and nothing else.\n"""
         
         attempts = 0
         max_attempts = 5
         while attempts < max_attempts:
             sequences = self.pipe(
                 prompt,
-                do_sample=True,
-                top_k=10,
+                do_sample=False,
                 num_return_sequences=1,
                 eos_token_id=self.tokenizer.eos_token_id,
                 max_new_tokens=50,
@@ -55,7 +54,7 @@ class LocalLLM(BaseLLM):
                 try:
                     parsed_move = chess.Move.from_uci(move_uci)
                     if parsed_move in board.legal_moves:
-                        print(f"Local LLM chose move: {move_uci}")
+                        # print(f"Local LLM chose move: {move_uci}")
                         return {'move': move_uci, 'model': self.name}
                     else:
                         print(f"Local LLM generated illegal move: {move_uci}. Retrying...")

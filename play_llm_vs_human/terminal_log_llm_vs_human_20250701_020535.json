@@ -1,0 +1,92 @@
+{
+  "moves": [
+    {
+      "move": "e4",
+      "uci": "e2e4",
+      "by": "human"
+    },
+    {
+      "move": "g8h6",
+      "uci": "g8h6",
+      "by": "llm"
+    },
+    {
+      "move": "d4",
+      "uci": "d2d4",
+      "by": "human"
+    },
+    {
+      "move": "h8g8",
+      "uci": "h8g8",
+      "by": "llm"
+    },
+    {
+      "move": "Nf3",
+      "uci": "g1f3",
+      "by": "human"
+    },
+    {
+      "move": "g8h8",
+      "uci": "g8h8",
+      "by": "llm"
+    },
+    {
+      "move": "Ng5",
+      "uci": "f3g5",
+      "by": "human"
+    },
+    {
+      "move": "h8g8",
+      "uci": "h8g8",
+      "by": "llm"
+    },
+    {
+      "move": "Qf3",
+      "uci": "d1f3",
+      "by": "human"
+    },
+    {
+      "move": "g8h8",
+      "uci": "g8h8",
+      "by": "llm"
+    },
+    {
+      "move": "Qxf7",
+      "uci": "f3f7",
+      "by": "human"
+    },
+    {
+      "move": "h6f7",
+      "uci": "h6f7",
+      "by": "llm"
+    },
+    {
+      "move": "h4",
+      "uci": "h2h4",
+      "by": "human"
+    },
+    {
+      "move": "h8g8",
+      "uci": "h8g8",
+      "by": "llm"
+    },
+    {
+      "move": "Bc4",
+      "uci": "f1c4",
+      "by": "human"
+    },
+    {
+      "move": "g8h8",
+      "uci": "g8h8",
+      "by": "llm"
+    },
+    {
+      "move": "Bxf7",
+      "uci": "c4f7",
+      "by": "human"
+    }
+  ],
+  "result": "1-0",
+  "start_time": "2025-07-01 02:01:51.734667",
+  "llm_model": "Local LLM"
+}
